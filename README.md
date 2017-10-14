@@ -11,4 +11,4 @@ Steps:
   3. Find landmarks (5 or so) in Harlem using Digital Collections, Maps by Decade, Wikipedia, Google Maps, etc.
   4. On geojson.io, add points for those landmarks, and draw lines for a walking route connecting them
   5. Use Maps by Decade to decide what maps/layers to use
-  6. Modify JS + HTML, finish website
+  6. Modify walking route JS + HTML, finish website
