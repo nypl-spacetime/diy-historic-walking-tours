@@ -73,4 +73,4 @@ map.setView([40.80558317487379, -73.94968271255495], 16)
 Open your index.html in a web browser, and behold your beautiful Leaflet map:
 ![Beautiful Map](./images/beautiful-map.png)  
 
-If you are stuck, ask a neighbor or check out the `2-instantiate-leaflet-SOLUTION` branch
+If you are stuck, ask a neighbor or check out the `2-instantiate-leaflet-SOLUTION` branch.
