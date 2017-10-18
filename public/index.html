@@ -4,12 +4,23 @@
     <!-- Metadata that tells web browsers about our website -->
     <meta charset="utf-8">
     <title>NYPL DIY Historic Walking Tour</title>
-    
+
+    <!-- Load Leaflet Styles to get nice default styles for our map components -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+    integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+    crossorigin=""/>
     <!-- Load our style -->
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
+    <!-- We tell Leaflet.js to mount our map to this HTML element -->
+    <div id="map">
+    </div>
 
+    <!-- Load the Leaflet JavaScript Library! -->
+    <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+    integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+    crossorigin=""></script>
     <!-- Load our JavaScript -->
     <script src="./map.js" charset="utf-8"></script>
   </body>
