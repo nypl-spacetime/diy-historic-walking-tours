@@ -1,56 +1,78 @@
-##  Step 3 - Add NYC Space/Time Basemap  
+##  Step 4 - Add Walking Tour Layers  
 
-Technically we now have a map (by Leaflet's standards).  Cartographers, however, might take issue with our "map" because there's no map data!
+Next we will create our walking tour data and add it to our map.  
 
-Let's make our map more interesting by adding a basemap from NYPL's digital map collection.  
 
-First, let's learn how to add a basemap to our Leaflet map.  Then we'll find an appropriate one from the NYPL's digital collections.
-___  
-**Note about basemaps:**  A challenge in web mapping is how to load all the data that is required to show maps at different parts of the world and at different scales (zoom levels).  It's impossible to send all the data to the browser at once.  We also don't know how a user will use the map.  We don't want to send them data for an area or zoom that they never even try to look at.  
+### GeoJSON  
+GeoJSON is a data format that is widely used for geographic data on the web.  It is a specific form of a JSON (JavaScript Object Notation).  This means it is just a JSON with a standard set of keys that allow clients (like Leaflet) to read & parse.  GeoJSON is formatted like this:  
 
-The solution for this problem of web mapping is to cut data into **tiles**.  You may seen this in action if you've tried to view a map with slow internet connection.
-![Tiles Loading GIF](./images/tiles-loading.gif)  
+```JSON
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-73.96299451589584, 40.809836408488124]
+  },
+  "properties": {
+    "name": "The Diana Center",
+    "address": "3009 Broadway, New York NY 10027"
+  }
+}
+```
+See [geojson.org](http://geojson.org/) or Tom MacWright's blog post [here](https://macwright.org/2015/03/23/geojson-second-bite#coordinate) for more details about the specification.  
 
-When we are panning or zooming on a map, the map client (Leaflet, OpenLayers, Google Maps) is constantly sending requests to a **tile server** to tell it which data we want to look at.  The tile server responds with all the tiles that we need to view the data.  
+---
+### Creating GeoJSON Data  
+There are many ways to create our own geographic data.  We could use desktop GIS, such as QGIS, or we could use web tools like CARTO, which stores data in a spatial database and provides an API for getting GeoJSON our of the db.  For this tutorial, we're going to use the easiest route and digitize our features in [GeoJSON.io](http://geojson.io/#map=16/40.80558317487379/-73.94968271255495).  
+![geojson.io screenshot](./images/geojson-io.png)  
 
-### Add a Basemap  
+**Points**  
+Start with the points of interest for your tour by clicking the "Draw a Marker" button.  After marking the geographic location of your POI, use the "Edit layers" button to click on your new point and add attribute information.  GeoJSON allows us to use any key:value pairs that make sense for the data.  
 
-Leaflet makes it easy for us to add a tile layer to our map with its `tileLayer` method.  
+After saving, you will see the data in GeoJSON form in the right panel.  I recommend removing the rows for `marker-color`, `marker-size`, and `marker-symbol` because we will use Leaflet for styling our GeoJSON.  Here's an example of a finished point layer:  
 
-Add the following at the bottom of your JavaScript to add a tile layer using [OpenStreetMap](https://www.openstreetmap.org/#map=16/40.8093/-73.9540)'s tile server:
+![points.geojson](./images/points.geojson.png)
+
+Create a new file, `points.geojson`, and paste the text from geojson.io into your new blank file.  We'll use this for our walking tour map.  
+
+Repeat the same process with the line editing tool, and save that in a file called `path.geojson`.  
+
+Example files that you can use for this tutorial are found in `./data/points.geojson` and `./data/path.geojson`, but you are encouraged to create your own walking tour!  
+
+---
+### Adding GeoJSON in Leaflet  
+
+Like we added our `tileLayer`, Leaflet provides convenient methods for adding geojson data, called `geoJSON()`.  
+
+Open your `map.js` file for the following steps.  
+
+- **Load your data into the map**  
+  There are a few strategies for doing this.  Typically you would load your data from an external file (like they are stored in `./data/` currently), or you would make a request to an API to get geojson data dynamically.  We are going to follow the simplest route - storing them directly in our JS as variables.  
 
 ```js
 /** public/map.js **/
 
-// Add a tile layer from OpenStreetMaps tile server
-// Pass a configuration object {} for attribution
-L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map); // this .addTo() syntax is called "method chaining".  It performs a function from the result of the previous function - L.tileLayer()
-```
+//  put this below your L.tileLayer code
+var points = //  paste your ./data/points.geojson here, including the {}
+var path = // paste your ./data/path.geojson here, including the {}
+```  
 
-If you save `map.js` and refresh your webpage you should see this:
-![osm tile layer](./images/osm-tileLayer.png)
----
-###  Navigating the NYC Space/Time Directory  
+We can now refer to our geojsons in our JS code as simply `point` and `path`.  
 
-To browse NYPL's digital map collections head over to [Map Warper](http://maps.nypl.org/warper/).  Map Warper is a:
-> "...tool for digitally aligning ("rectifying") historical maps from the NYPL's collections to match today's precise maps. Visitors can browse already rectified maps or assist the NYPL by aligning a map. "  
+- **Call L.geoJSON()**  
+This is very similar to how we added a tileLayer, but using our geojsons (stored as variables), and the geoJSON() method.
 
-![](./images/mapwarper-home.png)  
+```js
+/** public/map.js **/
 
-With Map Warper, we can browse all maps or ones that volunteers have already georeferenced for us.  We can also search the collections by _Layers_ , maps from the same atlas stitched together.  Let's "Find Layers by Location" for our basemap.  
+//  put this below your points and path variable declarations
+//  add the path layer  
+L.geoJSON(path).addTo(map);
+//  add the point layer
+L.geoJSON(points).addTo(map);
+```  
 
-![Map Warper GIF!](./images/mapwarper.gif)  
+Refresh your map and behold:
+![finished map screenshot](./images/walking-tour.png)  
 
-After clicking "Open Layer" on a layer of your choice, we are greeted with a few powerful tools.  We can browse the map, digitize features, and view detailed information about the atlas.    
-
-To use this layer in our custom application, we're interested in the _Export_ panel.  Among the many options for using this layer, one in particular is helpful for our Leaflet map:
-![map warper tile url](./images/mapwarper-export.png)
-
-That URL should look familiar.  Try replacing the OSM URL in `map.js` with the tiles URL in Map Warper.  Also Refresh your map to see Harlem in 1916.  
-![1916 Atlas Basemap png](./images/nypl-basemap.png)  
-
-We just made a web map with an atlas from 1916 in 9 lines of code.  Thank you Leaflet and NYPL!  
-
-See `3-add-nypl-basemap-SOLUTION` for the changes we made to `map.js`.  
+See `4-add-walking-tour-geojson-SOLUTION` for a walking tour map with point and path added.

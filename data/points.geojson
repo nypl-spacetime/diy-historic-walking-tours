@@ -1,0 +1,82 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "description": "James Baldwin's elementary school",
+        "est_date": 1930,
+        "ref_url": "http://amsterdamnews.com/news/2014/aug/07/james-baldwin-gets-his-place-harlem/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.93993556499481,
+          40.80778798776024
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "description": "Ralph Ellison residence",
+        "ref_url": "http://maap.columbia.edu/place/55"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.94940376281738,
+          40.8303719340127
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Invisible Man: A Memorial to Ralph Ellison",
+        "artist": "Elizabeth Catlett",
+        "year": 2003
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.94984364509583,
+          40.83023392857387
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Harriet Tubman Memorial",
+        "alt_name": "Swing Low",
+        "artist": "Alison Saar",
+        "date": "11-13-2008",
+        "ref_url": "https://en.wikipedia.org/wiki/Harriet_Tubman_Memorial_(New_York_City)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.95280480384827,
+          40.80817372097565
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "description": "Frederick Douglass Memorial",
+        "sculptor": "Gabriel Koren",
+        "date": "9-20-2011",
+        "ref_url": "https://www.nycgovparks.org/parks/central-park/monuments/2098"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -73.95813703536987,
+          40.80063730604987
+        ]
+      }
+    }
+  ]
+}
