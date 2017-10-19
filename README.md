@@ -1,76 +1,55 @@
-##  Step 2 - Instantiate Leaflet   
+##  Step 3 - Add NYPL Space/Time Basemap  
 
-We will use Leaflet to create our walking tour map.  [Leaflet](http://leafletjs.com/) is a lightweight & powerful JavaScript library used to make interactive web maps.  
+Technically we now have a map (by Leaflet's standards).  Cartographers, however, might take issue with our "map" because there's no map data!
 
-![leafletjs.com](./images/leafletjs.png)  
+Let's make our map more interesting by adding a basemap from NYPL's digital map collection.  
 
-Just like we told the browser that our web page relies on our local style and script (`./public/style.css` & `./public/map.js`), we need to tell the browser to load Leaflet.  
-___
-**Add Leaflet.css and Leaflet.js**  
-Open your index.html.  Add Leaflet's CSS above the `<link>` for your `style.css`:  
-```html
-<!-- public/index.html -->
-...
-  <!-- Load Leaflet Styles to get nice default styles for our map components -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
-  integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
-  crossorigin=""/>
-  <!-- Load our style -->
-  <link rel="stylesheet" href="./style.css">
-</head>
-...
-```
+First, let's learn how to add a basemap to our Leaflet map.  Then we'll find an appropriate one from NYPL's Space/Time Directory.
+___  
+**Note about basemaps:**  A challenge in web mapping is how to load all the data that is required to show maps at different parts of the world and at different scales (zoom levels).  It's impossible to send all the data to the browser at once.  We also don't know how a user will use the map.  We don't want to send them data for an area or zoom that they never even try to look at.  
 
-Similarly, add Leaflet's JS above your `<script>` element for `map.js`:  
-```html
-<!-- public/index.html -->
-...
-  <!-- Load the Leaflet JavaScript Library! -->
-  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
-  integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
-  crossorigin=""></script>
-  <!-- Load our JavaScript -->
-  <script src="./map.js" charset="utf-8"></script>
-</body>
-...
-```  
+The solution for this problem of web mapping is to cut data into **tiles**.  You may seen this in action if you've tried to view a map with slow internet connection.
+![Tiles Loading GIF](./images/tiles-loading.gif)  
 
-_Note: the order we load the JS files matters!  We need Leaflet.js to be loaded before our map.js so our code has access to Leaflet's methods._  
-___
-**Create a Leaflet Map**  
-Create a `<div>` element in our html to hold the map:  
-```html  
-<!-- public/index.html -->
-...
-<body>
-  <!-- We tell Leaflet.js to mount our map to this HTML element -->
-  <div id="map">
-  </div>
-...
-```  
+When we are panning or zooming on a map, the map client (Leaflet, OpenLayers, Google Maps) is constantly sending requests to a **tile server** to tell it which data we want to look at.  The tile server responds with all the tiles that we need to view the data.  
 
-Style the `<div>` to give it height and width:  
-```css
-/* public/style.css */
-#map {
-  height: 99vh;
-  width: 99vw;
-}
-```  
-The `vh` and `vw` are size units that refer to the viewport height and viewport width.  The viewport is the "user's visible area of a web page" [W3Schools](https://www.w3schools.com/css/css_rwd_viewport.asp), and is very useful for sizing our map responsively to the size of the browser.  
+### Add a Basemap  
 
-Next, in our JavaScript we will instantiate our map:  
+Leaflet makes it easy for us to add a tile layer to our map with its `tileLayer` method.  
+
+Add the following at the bottom of your JavaScript to add a tile layer using [OpenStreetMap](https://www.openstreetmap.org/#map=16/40.8093/-73.9540)'s tile server:
+
 ```js
-/** public/map.js  **/
+/** public/map.js **/
 
-// Initialize a Leaflet map and store a reference to the map Object
-var map = L.map('map')
-
-//  Set the [lat, long], and zoom for the map using Leaflet's setView method
-map.setView([40.80558317487379, -73.94968271255495], 16)
+// Add a tile layer from OpenStreetMaps tile server
+// Pass a configuration object {} for attribution
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map); // this .addTo() syntax is called "method chaining".  It performs a function from the result of the previous function - L.tileLayer()
 ```
+If you save `map.js` and refresh your webpage you should see this:
+![osm tile layer](./images/osm-tileLayer.png)
+---
+###  Navigating NYPL's Space/Time Directory  
 
-Open your index.html in a web browser, and behold your beautiful Leaflet map:
-![Beautiful Map](./images/beautiful-map.png)  
+To browse NYPL's digital map collections head over to [Map Warper](http://maps.nypl.org/warper/).  Map Warper is a:
+> "...tool for digitally aligning ("rectifying") historical maps from the NYPL's collections to match today's precise maps. Visitors can browse already rectified maps or assist the NYPL by aligning a map. "  
 
-If you are stuck, ask a neighbor or check out the `2-instantiate-leaflet-SOLUTION` branch.
+![](./images/mapwarper-home.png)  
+
+With Map Warper, we can browse all maps or ones that volunteers have already georeferenced for us.  We can also search the collections by _Layers_ , maps from the same atlas stitched together.  Let's "Find Layers by Location" for our basemap.  
+
+![Map Warper GIF!](./images/mapwarper.gif)  
+
+After clicking "Open Layer" on a layer of your choice, we are greeted with a few powerful tools.  We can browse the map, digitize features, and view detailed information about the atlas.    
+
+To use this layer in our custom application, we're interested in the _Export_ panel.  Among the many options for using this layer, one in particular is helpful for our Leaflet map:
+![map warper tile url](./images/mapwarper-export.png)
+
+That URL should look familiar.  Try replacing the OSM URL in `map.js` with the tiles URL in Map Warper.  Also Refresh your map to see Harlem in 1916.  
+![1916 Atlas Basemap png](./images/nypl-basemap.png)  
+
+We just made a web map with an atlas from 1916 in 9 lines of code.  Thank you Leaflet and NYPL!  
+
+See `3-add-nypl-basemap-SOLUTION` for the changes we made to `map.js`.  
