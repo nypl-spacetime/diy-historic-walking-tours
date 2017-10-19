@@ -1,10 +1,10 @@
-##  Step 3 - Add NYPL Space/Time Basemap  
+##  Step 3 - Add NYC Space/Time Basemap  
 
 Technically we now have a map (by Leaflet's standards).  Cartographers, however, might take issue with our "map" because there's no map data!
 
 Let's make our map more interesting by adding a basemap from NYPL's digital map collection.  
 
-First, let's learn how to add a basemap to our Leaflet map.  Then we'll find an appropriate one from NYPL's Space/Time Directory.
+First, let's learn how to add a basemap to our Leaflet map.  Then we'll find an appropriate one from the NYPL's digital collections.
 ___  
 **Note about basemaps:**  A challenge in web mapping is how to load all the data that is required to show maps at different parts of the world and at different scales (zoom levels).  It's impossible to send all the data to the browser at once.  We also don't know how a user will use the map.  We don't want to send them data for an area or zoom that they never even try to look at.  
 
@@ -28,10 +28,11 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map); // this .addTo() syntax is called "method chaining".  It performs a function from the result of the previous function - L.tileLayer()
 ```
+
 If you save `map.js` and refresh your webpage you should see this:
 ![osm tile layer](./images/osm-tileLayer.png)
 ---
-###  Navigating NYPL's Space/Time Directory  
+###  Navigating the NYC Space/Time Directory  
 
 To browse NYPL's digital map collections head over to [Map Warper](http://maps.nypl.org/warper/).  Map Warper is a:
 > "...tool for digitally aligning ("rectifying") historical maps from the NYPL's collections to match today's precise maps. Visitors can browse already rectified maps or assist the NYPL by aligning a map. "  
