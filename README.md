@@ -2,7 +2,6 @@
 
 Next we will create our walking tour data and add it to our map.  
 
-
 ### GeoJSON  
 GeoJSON is a data format that is widely used for geographic data on the web.  It is a specific form of a JSON (JavaScript Object Notation).  This means it is just a JSON with a standard set of keys that allow clients (like Leaflet) to read & parse.  GeoJSON is formatted like this:  
 
