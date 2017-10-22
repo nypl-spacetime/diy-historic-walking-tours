@@ -25,5 +25,6 @@ By the end of the tutorial you will have made your own walking tour using histor
 ### Resources  
 [NYC Space/Time Directory](http://spacetime.nypl.org/)  
 [Leaflet.js Documentation](http://leafletjs.com/)  
+[Geosandbox (great tool for experimenting with Leaflet)](https://joeyklee.github.io/geosandbox/)
 [Anatomy of a Web Map](http://maptime.io/anatomy-of-a-web-map/)  
 [Cartography Guide by Axis Maps](http://www.axismaps.com/guide/)
